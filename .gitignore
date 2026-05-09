@@ -1,0 +1,18 @@
+# Excluir fotos originales (muy pesadas para GitHub)
+# Solo se suben las miniaturas en imagenes/thumbs/
+imagenes/link 1/
+imagenes/link 2/
+imagenes/link 3/
+imagenes/link 4/
+imagenes/link 5/
+
+# Scripts de utilidad
+*.ps1
+
+# VS Code
+.vscode/
+
+# Archivos temporales
+*.tmp
+Thumbs.db
+.DS_Store

@@ -1,0 +1,2796 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALEXOMAR — Fotografía de Estudio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Barlow:wght@200;300;400;500&family=Barlow+Condensed:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --black: #080808;
+      --dark: #111010;
+      --card: #161414;
+      --crimson: #7a1728;
+      --crimson-light: #a02035;
+      --gold: #c9a96e;
+      --gold-dim: #9a7d4e;
+      --white: #f4f0eb;
+      --grey: #888;
+      --light-grey: #bbb;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── SCROLLBAR ─────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--black);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--crimson);
+    }
+
+    /* ─── CURSOR ────────────────────────────────── */
+    * {
+      cursor: none;
+    }
+
+    #cursor {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease, width 0.25s ease, height 0.25s ease, background 0.25s ease;
+      mix-blend-mode: difference;
+    }
+
+    #cursor.grow {
+      width: 42px;
+      height: 42px;
+      background: rgba(201, 169, 110, 0.15);
+      border: 1px solid var(--gold);
+    }
+
+    /* ─── NAV ───────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 60px;
+      background: linear-gradient(to bottom, rgba(8, 8, 8, 0.95) 0%, transparent 100%);
+      transition: background 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(8, 8, 8, 0.96);
+      padding: 18px 60px;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201, 169, 110, 0.08);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      max-width: 180px;
+      filter: invert(1) brightness(10);
+      transition: opacity 0.3s;
+      object-fit: contain;
+    }
+
+    .nav-logo img:hover {
+      opacity: 0.8;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 42px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--light-grey);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .nav-cta {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 10px 24px;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--white);
+      transform: translateY(-1px);
+    }
+
+    /* ─── HERO ──────────────────────────────────── */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      background-image: url('imagenes/foto10.jpeg');
+      background-size: cover;
+      background-position: center 20%;
+      transform: scale(1.04);
+      animation: heroZoom 8s ease forwards;
+    }
+
+    @keyframes heroZoom {
+      from {
+        transform: scale(1.04);
+      }
+
+      to {
+        transform: scale(1.0);
+      }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg,
+          rgba(8, 8, 8, 0.65) 0%,
+          rgba(8, 8, 8, 0.1) 50%,
+          rgba(8, 8, 8, 0.55) 100%);
+    }
+
+    .hero-overlay-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, var(--black) 0%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 60px 80px;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .hero-text {
+      max-width: 620px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(58px, 8vw, 110px);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.55s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      margin-top: 22px;
+      font-size: 15px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: rgba(244, 240, 235, 0.7);
+      line-height: 1.6;
+      max-width: 400px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.75s forwards;
+    }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 0.8s 1s forwards;
+    }
+
+    .hero-scroll {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+
+      0%,
+      100% {
+        transform: scaleY(0);
+        transform-origin: top;
+      }
+
+      50% {
+        transform: scaleY(1);
+        transform-origin: top;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── MARQUEE ───────────────────────────────── */
+    .marquee-band {
+      background: var(--crimson);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-inner {
+      display: inline-flex;
+      gap: 0;
+      animation: marquee 20s linear infinite;
+    }
+
+    .marquee-inner span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+      padding: 0 40px;
+    }
+
+    .marquee-inner span.dot {
+      color: var(--gold);
+      padding: 0 10px;
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ─── SECTION COMMON ────────────────────────── */
+    section {
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    h2.section-title {
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(40px, 5vw, 72px);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--white);
+    }
+
+    h2.section-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    /* ─── ENFOQUE ───────────────────────────────── */
+    #enfoque {
+      padding: 120px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: center;
+    }
+
+    .enfoque-left {}
+
+    .enfoque-body {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .enfoque-body p {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(244, 240, 235, 0.75);
+    }
+
+    .enfoque-body p.featured {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 22px;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(244, 240, 235, 0.85);
+      border-left: 2px solid var(--crimson);
+      padding-left: 22px;
+    }
+
+    .enfoque-img-wrap {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+    }
+
+    .enfoque-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+
+    .enfoque-img-wrap:hover img {
+      transform: scale(1.04);
+    }
+
+    .enfoque-img-frame {
+      position: absolute;
+      inset: -12px;
+      border: 1px solid rgba(201, 169, 110, 0.2);
+      pointer-events: none;
+      transform: translate(12px, 12px);
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 48px;
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stat span {
+      display: block;
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 6px;
+    }
+
+    /* ─── SOBRE MÍ ──────────────────────────────── */
+    #sobre {
+      padding: 0 60px 120px;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .sobre-img-wrap {
+      position: relative;
+    }
+
+    .sobre-img-wrap img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: top center;
+      filter: grayscale(20%) contrast(1.05);
+    }
+
+    .sobre-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 110px;
+      height: 110px;
+      background: var(--crimson);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .sobre-badge span:first-child {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .sobre-badge span:last-child {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .sobre-right {
+      padding-top: 60px;
+    }
+
+    .sobre-intro {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--white);
+      margin: 24px 0 32px;
+    }
+
+    .sobre-intro em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .sobre-body {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(244, 240, 235, 0.7);
+      margin-bottom: 32px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .service-item {
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .service-item:hover {
+      border-color: rgba(201, 169, 110, 0.3);
+      background: rgba(201, 169, 110, 0.04);
+    }
+
+    .service-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .service-item h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .service-item p {
+      font-size: 13px;
+      color: var(--grey);
+      line-height: 1.6;
+    }
+
+    /* ─── GALLERY / PORTFOLIO ───────────────────── */
+    #portafolio {
+      padding: 80px 0 0;
+    }
+
+    .portfolio-header {
+      padding: 0 60px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 60px;
+    }
+
+    .portfolio-tabs {
+      display: flex;
+      gap: 0;
+    }
+
+    .tab-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 24px;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover {
+      color: var(--black);
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    /* Gallery layout */
+    .gallery-section {
+      display: none;
+    }
+
+    .gallery-section.active {
+      display: block;
+    }
+
+    /* Project 01: Identidad */
+    .grid-identidad {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 4px;
+    }
+
+    .gi-1 {
+      grid-column: 1;
+      grid-row: 1 / 3;
+    }
+
+    .gi-2 {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .gi-3 {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .gi-4 {
+      grid-column: 2 / 4;
+      grid-row: 2;
+    }
+
+    /* Project 02: Concepto */
+    .grid-concepto {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      grid-template-rows: auto;
+      gap: 4px;
+    }
+
+    .gc-1 {
+      grid-column: 1;
+    }
+
+    .gc-2 {
+      grid-column: 2;
+    }
+
+    .gc-3 {
+      grid-column: 3;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3/4;
+    }
+
+    .gallery-item.landscape {
+      aspect-ratio: 16/9;
+    }
+
+    .gallery-item.wide {
+      aspect-ratio: 16/10;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: block;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 8, 8, 0);
+      transition: background 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 28px;
+      opacity: 0;
+      transition: all 0.4s;
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+      background: rgba(8, 8, 8, 0.4);
+      opacity: 1;
+    }
+
+    .gallery-item-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 5px 14px;
+    }
+
+    /* Project banner */
+    .project-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 60px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 4px;
+    }
+
+    .project-number {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 80px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.06);
+      line-height: 1;
+    }
+
+    .project-info h3 {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 42px;
+      font-weight: 300;
+      color: var(--white);
+    }
+
+    .project-info p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-top: 6px;
+    }
+
+    .project-desc {
+      max-width: 340px;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--grey);
+      text-align: right;
+    }
+
+    /* ─── GALERÍA DE EVENTOS ────────────────────── */
+    #galeria {
+      padding: 80px 60px 0;
+    }
+
+    .galeria-header {
+      margin-bottom: 60px;
+    }
+
+    .galeria-header .section-label {
+      margin-bottom: 16px;
+    }
+
+    .galeria-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      color: var(--grey);
+      margin-top: 16px;
+    }
+
+    .galeria-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+
+    .galeria-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 2/3;
+      cursor: none;
+    }
+
+    .galeria-card-img {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.7s ease;
+    }
+
+    .galeria-card:hover .galeria-card-img {
+      transform: scale(1.06);
+    }
+
+    .galeria-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8, 8, 8, 0.85) 0%, rgba(8, 8, 8, 0.1) 50%, transparent 100%);
+    }
+
+    .galeria-card-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .galeria-card-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gold-dim);
+    }
+
+    .galeria-card-name {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    .galeria-card-count {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: rgba(244, 240, 235, 0.6);
+    }
+
+    .galeria-card-arrow {
+      font-size: 18px;
+      color: var(--gold);
+      margin-top: 8px;
+      transition: transform 0.3s;
+    }
+
+    .galeria-card:hover .galeria-card-arrow {
+      transform: translateX(4px);
+    }
+
+    /* ─── MODAL GALERÍA ─────────────────────────── */
+    .gmodal {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(680px, 100vw);
+      height: 100vh;
+      background: var(--dark);
+      z-index: 500;
+      transition: right 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow-y: auto;
+      border-left: 1px solid rgba(201, 169, 110, 0.12);
+    }
+
+    .gmodal.open {
+      right: 0;
+    }
+
+    .gmodal-inner {
+      padding: 40px;
+    }
+
+    .gmodal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .gmodal-cat {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 8px;
+    }
+
+    .gmodal-title {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 36px;
+      font-weight: 300;
+      color: var(--white);
+    }
+
+    .gmodal-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .gmodal-count {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--grey);
+    }
+
+    .gmodal-close {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--grey);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: none;
+      transition: all 0.3s;
+    }
+
+    .gmodal-close:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .gmodal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .gmodal-thumb {
+      aspect-ratio: 1;
+      overflow: hidden;
+      cursor: none;
+      position: relative;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .gmodal-thumb.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gmodal-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+
+    .gmodal-thumb:hover img {
+      transform: scale(1.08);
+    }
+
+    /* Skeleton placeholder mientras carga */
+    .gmodal-thumb .thumb-skeleton {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .gmodal-thumb.img-ready .thumb-skeleton {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Lightbox imagen con fade */
+    #lb-img {
+      transition: opacity 0.25s ease;
+    }
+
+    #lb-img.fading {
+      opacity: 0;
+    }
+
+    /* Loading spinner en lightbox */
+    .lb-spinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(201,169,110,0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      z-index: 602;
+      display: none;
+    }
+
+    .lb-spinner.active {
+      display: block;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .goverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 499;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+      backdrop-filter: blur(4px);
+    }
+
+    .goverlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ─── LIGHTBOX ──────────────────────────────── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lb-img-wrap {
+      max-width: 90vw;
+      max-height: 90vh;
+      position: relative;
+    }
+
+    .lb-img-wrap img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lb-close,
+    .lb-prev,
+    .lb-next {
+      position: fixed;
+      background: rgba(8, 8, 8, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--white);
+      cursor: none;
+      transition: all 0.3s;
+      z-index: 601;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lb-close:hover,
+    .lb-prev:hover,
+    .lb-next:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .lb-close {
+      top: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      font-size: 16px;
+    }
+
+    .lb-prev {
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 60px;
+      font-size: 28px;
+    }
+
+    .lb-next {
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 60px;
+      font-size: 28px;
+    }
+
+    .lb-counter {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      color: var(--grey);
+      z-index: 601;
+    }
+
+    .lboverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 599;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .lboverlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ─── PRICING ───────────────────────────────── */
+    #precios {
+      padding: 120px 60px;
+      background: var(--dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #precios::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(122, 23, 40, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+
+    .pricing-header .section-label {
+      justify-content: center;
+    }
+
+    .pricing-header .section-label::before {
+      display: none;
+    }
+
+    .pricing-header .section-label::after {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .pricing-category {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 16px;
+      margin-bottom: -8px;
+    }
+
+    .pricing-category-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      white-space: nowrap;
+    }
+
+    .pricing-category-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(201, 169, 110, 0.15);
+    }
+
+    .pricing-notes {
+      max-width: 1000px;
+      margin: 48px auto 0;
+      padding: 32px 40px;
+      border: 1px solid rgba(201, 169, 110, 0.15);
+      background: rgba(201, 169, 110, 0.03);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 48px;
+    }
+
+    .pricing-notes-title {
+      grid-column: 1 / -1;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pricing-notes-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(201, 169, 110, 0.15);
+    }
+
+    .pricing-note-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(244, 240, 235, 0.65);
+      line-height: 1.6;
+    }
+
+    .pricing-note-item::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 10px;
+    }
+
+    .pricing-card {
+      padding: 52px 48px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      position: relative;
+      transition: border-color 0.4s, transform 0.4s;
+    }
+
+    .pricing-card:hover {
+      border-color: rgba(201, 169, 110, 0.3);
+      transform: translateY(-6px);
+    }
+
+    .pricing-card.featured {
+      border-color: var(--gold);
+      background: linear-gradient(145deg, rgba(201, 169, 110, 0.06) 0%, transparent 60%);
+    }
+
+    .pricing-card.featured::before {
+      content: 'MÁS POPULAR';
+      position: absolute;
+      top: -1px;
+      right: 32px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      color: var(--black);
+      background: var(--gold);
+      padding: 5px 14px;
+    }
+
+    .pkg-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 16px;
+    }
+
+    .pkg-name {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 42px;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .pkg-photos {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      color: var(--grey);
+      margin-bottom: 32px;
+    }
+
+    .pkg-price {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 36px;
+      margin-top: 8px;
+    }
+
+    .pkg-price .amount {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 110px;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 0.85;
+      letter-spacing: -0.03em;
+    }
+
+    .pkg-price .currency {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--gold);
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+
+    .pkg-includes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 44px;
+    }
+
+    .pkg-includes li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(244, 240, 235, 0.75);
+    }
+
+    .pkg-includes li::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .btn-book {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--white);
+      transition: all 0.3s;
+    }
+
+    .btn-book:hover,
+    .pricing-card.featured .btn-book {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--black);
+    }
+
+    .pricing-card.featured .btn-book:hover {
+      background: var(--white);
+      border-color: var(--white);
+    }
+
+    /* ─── FULL-BLEED BAND ───────────────────────── */
+    .fullbleed {
+      height: 600px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fullbleed img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+
+    .fullbleed-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+          rgba(8, 8, 8, 0.8) 0%,
+          rgba(8, 8, 8, 0.2) 50%,
+          rgba(8, 8, 8, 0.5) 100%);
+      display: flex;
+      align-items: center;
+      padding: 0 80px;
+    }
+
+    .fullbleed-quote {
+      max-width: 600px;
+    }
+
+    .fullbleed-quote blockquote {
+      font-family: 'Cormorant Garant', serif;
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .fullbleed-quote cite {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* ─── CONTACTO ──────────────────────────────── */
+    #contacto {
+      padding: 120px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: start;
+    }
+
+    .contacto-left .section-title {
+      margin-bottom: 28px;
+    }
+
+    .contacto-left p {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(244, 240, 235, 0.7);
+      margin-bottom: 48px;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .contact-line {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .contact-line:last-child {
+      border-bottom: none;
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(201, 169, 110, 0.25);
+      background: rgba(201, 169, 110, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    }
+
+    .contact-line:hover .contact-icon {
+      border-color: var(--gold);
+      background: rgba(201, 169, 110, 0.1);
+      transform: scale(1.08);
+    }
+
+    .contact-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--gold);
+      fill: none;
+      transition: stroke 0.3s;
+    }
+
+    .contact-icon svg.filled {
+      fill: var(--gold);
+      stroke: none;
+    }
+
+    .contact-line a.contact-link {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+      transition: opacity 0.3s;
+    }
+
+    .contact-line a.contact-link:hover {
+      opacity: 0.8;
+    }
+
+    .contact-detail span:first-child {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 5px;
+    }
+
+    .contact-detail span:last-child {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+
+    /* Form */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.3s;
+      resize: none;
+      cursor: none;
+    }
+
+    .form-group select option {
+      background: var(--dark);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-submit {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      border: none;
+      padding: 18px 40px;
+      cursor: none;
+      transition: background 0.3s, transform 0.2s;
+      align-self: flex-start;
+    }
+
+    .btn-submit:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .form-footer-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--grey);
+      font-style: italic;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-icon {
+      display: flex;
+      align-items: center;
+    }
+
+    .field-error {
+      display: none;
+      font-size: 11px;
+      color: #e05a5a;
+      margin-top: 2px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── FOOTER ────────────────────────────────── */
+    footer {
+      background: #050505;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-logo img {
+      height: 56px;
+      width: auto;
+      filter: invert(1) brightness(2);
+      opacity: 0.9;
+    }
+
+    .footer-tagline {
+      font-size: 12px;
+      color: var(--grey);
+      margin-top: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--light-grey);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      padding: 8px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.3s ease;
+    }
+
+    .social-btn:hover {
+      color: var(--white);
+      border-color: rgba(201, 169, 110, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .social-btn.instagram:hover {
+      background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .social-btn svg {
+      flex-shrink: 0;
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .footer-info span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grey);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    /* ─── REVEAL ANIMATIONS ─────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.35s;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────── */
+    @media (max-width: 960px) {
+      nav {
+        padding: 20px 28px;
+      }
+
+      nav.scrolled {
+        padding: 14px 28px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-content {
+        padding: 0 28px 60px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 32px;
+      }
+
+      #enfoque {
+        grid-template-columns: 1fr;
+        padding: 80px 28px;
+        gap: 48px;
+      }
+
+      .enfoque-img-wrap {
+        max-height: 500px;
+      }
+
+      #sobre {
+        grid-template-columns: 1fr;
+        padding: 0 28px 80px;
+      }
+
+      .portfolio-header {
+        padding: 0 28px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+
+      .project-banner {
+        padding: 28px;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .project-desc {
+        text-align: left;
+      }
+
+      .grid-identidad {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gi-1 {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .gi-2 {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      .gi-3 {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .gi-4 {
+        grid-column: 2;
+        grid-row: 2;
+      }
+
+      .grid-concepto {
+        grid-template-columns: 1fr;
+      }
+
+      #galeria {
+        padding: 60px 28px 0;
+      }
+
+      .galeria-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      #precios {
+        padding: 80px 28px;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+      }
+
+      #contacto {
+        grid-template-columns: 1fr;
+        padding: 80px 28px;
+        gap: 60px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 32px;
+        text-align: center;
+        padding: 40px 28px;
+      }
+
+      .fullbleed-overlay {
+        padding: 0 32px;
+      }
+
+      .gmodal {
+        width: 100vw;
+      }
+
+      .gmodal-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="cursor"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a class="nav-logo" href="#hero">
+      <img src="imagenes/tipografia.png" alt="ALEXOMAR Fotógrafo" title="ALEXOMAR Fotógrafo">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#enfoque">Enfoque</a></li>
+      <li><a href="#sobre">Sobre mí</a></li>
+      <li><a href="#portafolio">Portafolio</a></li>
+      <li><a href="#galeria">Eventos</a></li>
+      <li><a href="#precios">Precios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a class="nav-cta" href="#contacto">Agenda tu sesión</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-img"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-overlay-bottom"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Fotografía de Estudio · Retratos · Producción Visual</p>
+        <h1 class="hero-title">Imágenes que<br><em>revelan</em><br>tu esencia.</h1>
+        <p class="hero-sub">Cada sesión es una experiencia diseñada para capturar tu autenticidad con luz, dirección y
+          carácter.</p>
+      </div>
+      <div class="hero-right">
+        <div class="hero-scroll">
+          <span>Scroll</span>
+          <div class="hero-scroll-line"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-band">
+    <div class="marquee-inner">
+      <span>FOTOGRAFÍA DE ESTUDIO</span><span class="dot">✦</span>
+      <span>RETRATOS</span><span class="dot">✦</span>
+      <span>DIRECCIÓN CREATIVA</span><span class="dot">✦</span>
+      <span>PRODUCCIÓN VISUAL</span><span class="dot">✦</span>
+      <span>MARCAS PERSONALES</span><span class="dot">✦</span>
+      <span>CONTENIDO DIGITAL</span><span class="dot">✦</span>
+      <span>FOTOGRAFÍA DE ESTUDIO</span><span class="dot">✦</span>
+      <span>RETRATOS</span><span class="dot">✦</span>
+      <span>DIRECCIÓN CREATIVA</span><span class="dot">✦</span>
+      <span>PRODUCCIÓN VISUAL</span><span class="dot">✦</span>
+      <span>MARCAS PERSONALES</span><span class="dot">✦</span>
+      <span>CONTENIDO DIGITAL</span><span class="dot">✦</span>
+    </div>
+  </div>
+
+  <!-- ENFOQUE -->
+  <section id="enfoque">
+    <div class="enfoque-left reveal">
+      <p class="section-label">Mi Filosofía</p>
+      <h2 class="section-title">Más que<br>tomar<br><em>fotos.</em></h2>
+      <div class="enfoque-body">
+        <p class="featured">"Trabajo con iluminación, dirección y composición para construir imágenes que transmiten
+          emoción, estilo y carácter."</p>
+        <p>Este portafolio es una muestra de mi trabajo en fotografía de estudio y retrato. Cada imagen está pensada
+          para resaltar la esencia, actitud y personalidad de cada persona frente a la cámara.</p>
+        <p>Mi objetivo es crear una experiencia donde el cliente se sienta cómodo, seguro y auténtico, logrando
+          resultados naturales pero impactantes.</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-num">100+</span>
+          <span class="stat-label">Sesiones</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Proyectos</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Creatividad</span>
+        </div>
+      </div>
+    </div>
+    <div class="enfoque-img-wrap reveal reveal-delay-2">
+      <img src="imagenes/foto1.jpeg" alt="Fotografía de estudio - Retrato">
+      <div class="enfoque-img-frame"></div>
+    </div>
+  </section>
+
+  <!-- SOBRE MÍ -->
+  <section id="sobre">
+    <div class="sobre-img-wrap reveal">
+      <img src="imagenes/foto2.jpg" alt="Alex Omar - Fotógrafo Profesional">
+      <div class="sobre-badge">
+        <span>Pro</span>
+        <span>Estudio</span>
+      </div>
+    </div>
+    <div class="sobre-right reveal reveal-delay-2">
+      <p class="section-label">Sobre mí</p>
+      <p class="sobre-intro">Me especializo en fotografía de estudio y retratos, creando imágenes que resaltan la
+        <em>esencia, personalidad y estilo</em> de cada persona.
+      </p>
+      <p class="sobre-body">Disponible para sesiones personales, marcas, contenido digital y proyectos creativos. Cada
+        trabajo es una colaboración donde el cliente es el protagonista. Creo ambientes donde la autenticidad florece
+        naturalmente.</p>
+      <div class="services-grid">
+        <div class="service-item">
+          <span class="service-icon">🎯</span>
+          <h4>Sesiones Personales</h4>
+          <p>Retratos únicos que proyectan tu mejor versión.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-icon">✦</span>
+          <h4>Marcas Personales</h4>
+          <p>Contenido visual que comunica tu identidad.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-icon">◈</span>
+          <h4>Contenido Digital</h4>
+          <p>Imágenes optimizadas para redes y medios.</p>
+        </div>
+        <div class="service-item">
+          <span class="service-icon">◉</span>
+          <h4>Proyectos Creativos</h4>
+          <p>Dirección artística y concepto visual.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTAFOLIO -->
+  <section id="portafolio">
+    <div class="portfolio-header">
+      <div class="reveal">
+        <p class="section-label">Trabajos</p>
+        <h2 class="section-title">Portafolio</h2>
+      </div>
+      <div class="portfolio-tabs reveal reveal-delay-2">
+        <button class="tab-btn active" onclick="showTab('identidad', this)">01 — Identidad</button>
+        <button class="tab-btn" onclick="showTab('concepto', this)">02 — Concepto</button>
+      </div>
+    </div>
+
+    <!-- Project 01: Identidad -->
+    <div class="gallery-section active" id="tab-identidad">
+      <div class="project-banner">
+        <span class="project-number">01</span>
+        <div class="project-info">
+          <h3>Identidad</h3>
+          <p>Fotografía de Estudio · Retratos · Dirección Creativa</p>
+        </div>
+        <p class="project-desc">Una serie de retratos en estudio enfocados en resaltar la identidad, estilo y
+          personalidad de cada persona.</p>
+      </div>
+      <div class="grid-identidad">
+        <div class="gallery-item gi-1">
+          <img src="imagenes/foto3.jpeg" alt="Retrato de pareja en estudio">
+          <div class="gallery-item-overlay"><span class="gallery-item-tag">Pareja</span></div>
+        </div>
+        <div class="gallery-item gi-2 landscape">
+          <img src="imagenes/foto4.jpg" alt="Retrato close-up">
+          <div class="gallery-item-overlay"><span class="gallery-item-tag">Close-up</span></div>
+        </div>
+        <div class="gallery-item gi-3">
+          <img src="imagenes/foto5.jpg" alt="Retrato editorial">
+          <div class="gallery-item-overlay"><span class="gallery-item-tag">Editorial</span></div>
+        </div>
+        <div class="gallery-item gi-4 wide">
+          <img src="imagenes/foto6.jpg" alt="Duo en estudio">
+          <div class="gallery-item-overlay"><span class="gallery-item-tag">Duo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 02: Concepto -->
+    <div class="gallery-section" id="tab-concepto">
+      <div class="project-banner">
+        <span class="project-number">02</span>
+        <div class="project-info">
+          <h3>Concepto</h3>
+          <p>Fotografía Creativa · Dirección Artística · Concepto Visual</p>
+        </div>
+        <p class="project-desc">Una línea más creativa y conceptual. Cada imagen explora diferentes ideas, iluminación y
+          estilos para generar impacto visual.</p>
+      </div>
+      <div class="grid-concepto">
+        <div class="gallery-item gc-1">
+          <img src="imagenes/foto7.jpg" alt="Fotografía conceptual - hombre">
+          <div class="gallery-item-overlay"><span class="gallery-item-tag">Luz &amp; Sombra</span></div>
+        </div>
+        <div class="gallery-item gc-2">
+          <img src="imagenes/foto8.jpg" alt="Fotografía conceptual - mujer">
+          <div class="gallery-item-overlay"><span class="gallery-item-tag">Glamour</span></div>
+        </div>
+        <div class="gallery-item gc-3">
+          <img src="imagenes/foto9.jpg" alt="Fotografía conceptual - alas">
+          <div class="gallery-item-overlay"><span class="gallery-item-tag">Artístico</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA DE EVENTOS -->
+  <section id="galeria">
+    <div class="galeria-header reveal">
+      <p class="section-label">Galería</p>
+      <h2 class="section-title">Explora mis <em>trabajos</em></h2>
+      <p class="galeria-sub">Selecciona una categoría para ver todas las fotografías</p>
+    </div>
+    <div class="galeria-grid">
+      <div class="galeria-card reveal reveal-delay-1" onclick="abrirCategoria(0)">
+        <div class="galeria-card-img" id="portada-link1"></div>
+        <div class="galeria-card-info">
+          <span class="galeria-card-num">01</span>
+          <h3 class="galeria-card-name">Arte &amp; Retrato</h3>
+          <span class="galeria-card-count" id="count-link1">cargando...</span>
+          <span class="galeria-card-arrow">→</span>
+        </div>
+      </div>
+      <div class="galeria-card reveal reveal-delay-2" onclick="abrirCategoria(1)">
+        <div class="galeria-card-img" id="portada-link2"></div>
+        <div class="galeria-card-info">
+          <span class="galeria-card-num">02</span>
+          <h3 class="galeria-card-name">XV Años · Studio</h3>
+          <span class="galeria-card-count" id="count-link2">cargando...</span>
+          <span class="galeria-card-arrow">→</span>
+        </div>
+      </div>
+      <div class="galeria-card reveal reveal-delay-3" onclick="abrirCategoria(2)">
+        <div class="galeria-card-img" id="portada-link3"></div>
+        <div class="galeria-card-info">
+          <span class="galeria-card-num">03</span>
+          <h3 class="galeria-card-name">XV Años · Natural</h3>
+          <span class="galeria-card-count" id="count-link3">cargando...</span>
+          <span class="galeria-card-arrow">→</span>
+        </div>
+      </div>
+      <div class="galeria-card reveal reveal-delay-1" onclick="abrirCategoria(3)">
+        <div class="galeria-card-img" id="portada-link4"></div>
+        <div class="galeria-card-info">
+          <span class="galeria-card-num">04</span>
+          <h3 class="galeria-card-name">Bodas</h3>
+          <span class="galeria-card-count" id="count-link4">cargando...</span>
+          <span class="galeria-card-arrow">→</span>
+        </div>
+      </div>
+      <div class="galeria-card reveal reveal-delay-2" onclick="abrirCategoria(4)">
+        <div class="galeria-card-img" id="portada-link5"></div>
+        <div class="galeria-card-info">
+          <span class="galeria-card-num">05</span>
+          <h3 class="galeria-card-name">Fotos Infantiles</h3>
+          <span class="galeria-card-count" id="count-link5">cargando...</span>
+          <span class="galeria-card-arrow">→</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL LATERAL GALERÍA -->
+  <div id="galeria-modal" class="gmodal">
+    <div class="gmodal-inner">
+      <div class="gmodal-header">
+        <div>
+          <p class="gmodal-cat" id="gmodal-cat">Galería</p>
+          <h3 class="gmodal-title" id="gmodal-title"></h3>
+        </div>
+        <div class="gmodal-meta">
+          <span class="gmodal-count" id="gmodal-count"></span>
+          <button class="gmodal-close" onclick="cerrarModal()">✕</button>
+        </div>
+      </div>
+      <div id="gmodal-grid" class="gmodal-grid"></div>
+    </div>
+  </div>
+  <div id="galeria-overlay" class="goverlay" onclick="cerrarModal()"></div>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox">
+    <div class="lb-img-wrap"><img id="lb-img" src="" alt=""></div>
+    <button class="lb-close" onclick="cerrarLightbox()">✕</button>
+    <button class="lb-prev" onclick="navLightbox(-1)">&#8249;</button>
+    <button class="lb-next" onclick="navLightbox(1)">&#8250;</button>
+    <div class="lb-counter"><span id="lb-cur">1</span> / <span id="lb-tot">1</span></div>
+  </div>
+  <div class="lb-spinner" id="lb-spinner"></div>
+  <div id="lb-overlay" class="lboverlay" onclick="cerrarLightbox()"></div>
+
+  <!-- FULL BLEED -->
+  <div class="fullbleed">
+    <img src="imagenes/fondo11.jpeg" alt="Fotografía de estudio Alex Omar">
+    <div class="fullbleed-overlay">
+      <div class="fullbleed-quote reveal">
+        <blockquote>"Cada imagen está pensada para resaltar la esencia, actitud y personalidad de cada persona frente a
+          la cámara."</blockquote>
+        <cite>— Alex Omar, Fotógrafo Profesional</cite>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRECIOS -->
+  <section id="precios">
+    <div class="pricing-header reveal">
+      <p class="section-label">Paquetes</p>
+      <h2 class="section-title">Agenda tu <em>sesión</em></h2>
+    </div>
+    <div class="pricing-grid">
+
+      <!-- Categoría: Estudio -->
+      <div class="pricing-category">
+        <span class="pricing-category-label">Sesión de Estudio</span>
+        <span class="pricing-category-line"></span>
+      </div>
+
+      <!-- Paquete A -->
+      <div class="pricing-card reveal reveal-delay-1">
+        <p class="pkg-label">Paquete A</p>
+        <h3 class="pkg-name">Clásico</h3>
+        <p class="pkg-photos">6 fotografías editadas</p>
+        <div class="pkg-price">
+          <span class="currency">$</span>
+          <span class="amount">55</span>
+        </div>
+        <ul class="pkg-includes">
+          <li>6 fotos retocadas profesionalmente</li>
+          <li>Sesión en estudio</li>
+          <li>Dirección de posado incluida</li>
+          <li>Entrega digital en alta resolución</li>
+        </ul>
+        <a href="#contacto" class="btn-book">Agendar ahora</a>
+      </div>
+
+      <!-- Paquete B -->
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <p class="pkg-label">Paquete B</p>
+        <h3 class="pkg-name">Prestige</h3>
+        <p class="pkg-photos">10 fotografías editadas</p>
+        <div class="pkg-price">
+          <span class="currency">$</span>
+          <span class="amount">90</span>
+        </div>
+        <ul class="pkg-includes">
+          <li>10 fotos retocadas profesionalmente</li>
+          <li>Sesión en estudio extendida</li>
+          <li>Dirección creativa y artística</li>
+          <li>Múltiples cambios de look</li>
+          <li>Entrega digital en alta resolución</li>
+        </ul>
+        <a href="#contacto" class="btn-book">Agendar ahora</a>
+      </div>
+
+      <!-- Categoría: Eventos & Bodas -->
+      <div class="pricing-category">
+        <span class="pricing-category-label">Eventos &amp; Bodas</span>
+        <span class="pricing-category-line"></span>
+      </div>
+
+      <!-- Paquete C -->
+      <div class="pricing-card reveal reveal-delay-1">
+        <p class="pkg-label">Paquete C — Eventos</p>
+        <h3 class="pkg-name">Celebración</h3>
+        <p class="pkg-photos">100 fotos digitales</p>
+        <div class="pkg-price">
+          <span class="currency">$</span>
+          <span class="amount">350</span>
+        </div>
+        <ul class="pkg-includes">
+          <li>100 Fotos Digitales editadas</li>
+          <li>Sesión de fotos en exteriores</li>
+          <li>1 Photobook (50 fotos impresas)</li>
+          <li>Entrega digital en alta resolución</li>
+        </ul>
+        <a href="#contacto" class="btn-book">Agendar ahora</a>
+      </div>
+
+      <!-- Paquete D -->
+      <div class="pricing-card reveal reveal-delay-2">
+        <p class="pkg-label">Paquete D — Bodas</p>
+        <h3 class="pkg-name">Nupcial</h3>
+        <p class="pkg-photos">250 fotos digitales</p>
+        <div class="pkg-price">
+          <span class="currency">$</span>
+          <span class="amount">499</span>
+        </div>
+        <ul class="pkg-includes">
+          <li>250 Fotos Digitales editadas</li>
+          <li>Sesión de fotos en exteriores</li>
+          <li>1 Photobook (50 fotos impresas)</li>
+          <li>3 Ampliaciones 20×30 cm</li>
+          <li>Cobertura ceremonia &amp; recepción</li>
+        </ul>
+        <a href="#contacto" class="btn-book">Agendar ahora</a>
+      </div>
+
+    </div>
+
+    <!-- Notas -->
+    <div class="pricing-notes reveal">
+      <p class="pricing-notes-title">Notas importantes</p>
+      <div class="pricing-note-item">Los paquetes C y D incluyen cobertura de ceremonia, recepción y mini sesión de
+        pareja.</div>
+      <div class="pricing-note-item">Servicio de Free Delivery a domicilio o lugar de trabajo.</div>
+      <div class="pricing-note-item">Entrega garantizada en 5 días hábiles una vez el cliente finalice su selección de
+        fotos.</div>
+      <div class="pricing-note-item">Photobook diseñado por el fotógrafo — tiempo estimado de entrega: 2 semanas.</div>
+    </div>
+
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="contacto-left reveal">
+      <p class="section-label">Contacto</p>
+      <h2 class="section-title">Hablemos de<br>tu <em>proyecto.</em></h2>
+      <p>¿Listo para crear imágenes que proyecten tu mejor versión? Escríbeme y agendamos tu sesión. Cada cliente merece
+        una experiencia única.</p>
+      <div class="contact-info">
+
+        <!-- Instagram -->
+        <div class="contact-line">
+          <a class="contact-link" href="https://www.instagram.com/alex0marph" target="_blank" rel="noopener noreferrer">
+            <div class="contact-icon">
+              <svg class="filled" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+              </svg>
+            </div>
+            <div class="contact-detail">
+              <span>Instagram</span>
+              <span>@alex0marph</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Ubicación -->
+        <div class="contact-line">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+              <circle cx="12" cy="9" r="2.5" />
+            </svg>
+          </div>
+          <div class="contact-detail">
+            <span>Ubicación</span>
+            <span>Lago Agrio · Sucumbíos · Ecuador</span>
+          </div>
+        </div>
+
+        <!-- Disponibilidad -->
+        <div class="contact-line">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M9 9l6 6M15 9l-6 6" />
+            </svg>
+          </div>
+          <div class="contact-detail">
+            <span>Disponible para</span>
+            <span>Retratos · Marcas · Contenido Digital</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <form class="contact-form" onsubmit="handleSubmit(event)" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-nombre">Nombre</label>
+            <input id="f-nombre" type="text" placeholder="Tu nombre completo" required autocomplete="off">
+            <span class="field-error" id="err-nombre">Por favor ingresa tu nombre.</span>
+          </div>
+          <div class="form-group">
+            <label for="f-contacto">Teléfono / Instagram</label>
+            <input id="f-contacto" type="text" placeholder="0991234567 o @usuario" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="f-paquete">Tipo de sesión</label>
+          <select id="f-paquete">
+            <option value="">Selecciona un paquete</option>
+            <option value="Paquete A — Esencial · 6 fotos · $55">Paquete A — Esencial · 6 fotos · $55</option>
+            <option value="Paquete B — Completo · 10 fotos · $90">Paquete B — Completo · 10 fotos · $90</option>
+            <option value="Paquete C — Evento · 100 fotos · $350">Paquete C — Evento · 100 fotos · $350</option>
+            <option value="Paquete D — Boda · 250 fotos · $499">Paquete D — Boda · 250 fotos · $499</option>
+            <option value="Proyecto especial / Marca">Proyecto especial / Marca</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-idea">Cuéntame tu idea</label>
+          <textarea id="f-idea" rows="5" placeholder="Describe qué tienes en mente para tu sesión..."></textarea>
+        </div>
+        <div class="form-footer-row">
+          <button type="submit" class="btn-submit">
+            <span class="btn-text">Enviar por WhatsApp</span>
+            <span class="btn-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+            </span>
+          </button>
+          <p class="form-note">Te respondo en menos de 24 horas. Sin compromiso.</p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-logo"><img src="imagenes/tipografia.png" alt="ALEXOMAR Fotógrafo"></div>
+      <div class="footer-tagline">Fotografía de Estudio · Retratos · Producción Visual</div>
+      <div class="footer-info">
+        <span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          LAGO AGRIO — SUCUMBÍOS, ECUADOR
+        </span>
+      </div>
+      <div class="footer-social">
+        <a class="social-btn instagram" href="https://www.instagram.com/alex0marph" target="_blank"
+          rel="noopener noreferrer" title="Seguir en Instagram @alex0marph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+          </svg>
+          @alex0marph
+        </a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="#enfoque">Enfoque</a>
+      <a href="#sobre">Sobre mí</a>
+      <a href="#portafolio">Portafolio</a>
+      <a href="#precios">Precios</a>
+    </div>
+    <div class="footer-copy">© 2026 AlexOmar · Todos los derechos reservados</div>
+  </footer>
+
+  <script>
+    // ============================================================
+    // GALERÍA DE EVENTOS — CONFIGURACIÓN
+    // ============================================================
+    const CARPETA_MAP = { 'link1': 'link 1', 'link2': 'link 2', 'link3': 'link 3', 'link4': 'link 4', 'link5': 'link 5' };
+    const GALERIA_DATA = [
+      {
+        id: 'link1',
+        nombre: 'Arte & Retrato',
+        portada: null,
+        fotos: ['1.2.jpg', '1.4 - copia.jpg', 'C1.jpg', 'ChatGPT Image 7 may 2026, 11_56_16 p.m. copia.jpg', 'DSC08337 copia.jpg', 'DSC09920 copia.jpg', 'ESTUDIO-FOTOGRAFICO-160-Editar.jpg', 'a1.jpg', 'ccc.jpg', 'fgvb.jpg', 'firefly-output-1778136052268 copia 2.jpg', 'firefly-output-1778217824315 copia.jpg', 'g.jpg', 's1.jpg', 'x2.jpg', 'x6.jpg', 'xxxx.jpg', 'z.jpg']
+      },
+      {
+        id: 'link2',
+        nombre: 'XV Años · Studio',
+        portada: null,
+        fotos: ['DSC00084 copia.jpg', 'DSC00112 copia.jpg', 'DSC00431 copia 2.jpg', 'DSC00449 copia 2.jpg', 'DSC00452 copia 2.jpg', 'DSC00490 copia 3.jpg', 'DSC09092 copia 2.jpg', 'DSC09125 copia 3.jpg', 'DSC09520 copia.jpg', 'ESTUDIO-FOTOGRAFICO-2768-Editar.jpg', 'ESTUDIO-FOTOGRAFICO-3224-Editar.jpg', 'ESTUDIO-FOTOGRAFICO-3265-Editar.jpg', 'ESTUDIO-FOTOGRAFICO-3384-Editar copia.jpg']
+      },
+      {
+        id: 'link3',
+        nombre: 'XV Años · Natural',
+        portada: null,
+        fotos: ['DSC00120 copia.jpg', 'DSC00131 copia.jpg', 'DSC00134 copia.jpg', 'DSC00144 copia.jpg', 'DSC02049 copia.jpg', 'DSC02058 copia.jpg', 'DSC02374 copia.jpg', 'DSC02388 copia 2.jpg', 'DSC02392 copiaOmar1234-sharpen-face copia (2).jpg', 'DSC02463 copia (2).jpg', 'DSC07581 copia.jpg', 'DSC07626 copia.jpg', 'DSC07638 copia.jpg', 'DSC07666 copia.jpg', '_DSC0639 copia.jpg', '_DSC0659 copia.jpg', '122222486606344_1460724685261483_3945593413662668669_nOmar1234-face-upscale-2.1x.jpeg', '122222486951174_1460724561928162_1321450908672098428_nOmar1234-face-sharpen-upscale-1.9x.jpeg', '122222495570241_1495473811786570_1677674341224032242_nOmar1234-face-upscale-2x.jpeg']
+      },
+      {
+        id: 'link4',
+        nombre: 'Bodas',
+        portada: 'PORTADA.jpg',
+        fotos: ['PORTADA.jpg', 'DSC01649 copia.jpg', 'DSC01666 copia.jpg', 'DSC01699 copia.jpg', 'DSC02539 copia.jpg', 'DSC02654 copia.jpg', 'DSC02657 copia.jpg', 'DSC02661 copia.jpg', 'DSC02726 copia.jpg', 'DSC02908 copia.jpg', 'DSC02991 copia.jpg', 'DSC03002 copia.jpg', 'DSC03027 copia.jpg', 'DSC03063 copia.jpg', 'DSC03080 copia.jpg', 'DSC03084 copia.jpg', 'DSC03112 copia.jpg', 'DSC03119 copia.jpg', 'DSC03132 copia.jpg', 'DSC03211 copia.jpg', 'DSC03225 copia.jpg', 'DSC03297 copia.jpg', 'DSC03319 copia.jpg', 'DSC03325 copia.jpg', 'DSC03326 copia.jpg', 'DSC03336 copia.jpg', 'DSC03352 copia.jpg', 'DSC03387 copia - copia.jpg', 'DSC03432 copia - copia.jpg', 'DSC03443 copia.jpg', 'DSC03468 copia.jpg', 'DSC09472 copia 5.jpg', 'DSC09479 copia 2.jpg', 'DSC09483 copia.jpg', 'DSC09497 copia.jpg', 'DSC09574 copia.jpg', 'DSC09849 copia 2.jpg']
+      },
+      {
+        id: 'link5',
+        nombre: 'Fotos Infantiles',
+        portada: null,
+        fotos: ['DDDD.jpg', 'EITAN 2 copia.jpg', 'ESTUDIO-FOTOGRAFICO-2428-Editar.jpg', 'ESTUDIO-FOTOGRAFICO-5013-Editar.jpg', 'ESTUDIO-FOTOGRAFICO-5014-Editar copia.jpg', 'ESTUDIO-FOTOGRAFICO-5020-Editar.jpg', 'd2.jpg', 'firefly-output-1778134807788 copia.jpg']
+      }
+    ];
+
+    // Inicializar cards con portadas y conteos
+    (function initGaleria() {
+      GALERIA_DATA.forEach((cat, i) => {
+        const portadaFile = cat.portada || (cat.fotos.length > 0 ? cat.fotos[0] : null);
+        const imgEl = document.getElementById('portada-' + cat.id);
+        if (imgEl && portadaFile) {
+          // Usar la miniatura para la portada (carga rapida)
+          const carpeta = CARPETA_MAP[cat.id] || cat.id;
+          imgEl.style.backgroundImage = "url('imagenes/thumbs/" + carpeta + "/" + portadaFile + "')";
+        }
+        const countEl = document.getElementById('count-' + cat.id);
+        if (countEl) {
+          countEl.textContent = cat.fotos.length > 0 ? cat.fotos.length + ' fotograf\u00edas' : 'Pr\u00f3ximamente';
+        }
+      });
+    })();
+
+    let lbFotos = [], lbIdx = 0;
+
+    function abrirCategoria(idx) {
+      const cat = GALERIA_DATA[idx];
+      if (!cat) return;
+      const carpeta = CARPETA_MAP[cat.id] || cat.id;
+
+      document.getElementById('gmodal-cat').textContent = '0' + (idx + 1) + ' \u2014 Galer\u00eda';
+      document.getElementById('gmodal-title').textContent = cat.nombre;
+      document.getElementById('gmodal-count').textContent = cat.fotos.length + ' fotograf\u00edas';
+
+      const grid = document.getElementById('gmodal-grid');
+      grid.innerHTML = '';
+
+      // Resetear scroll del panel
+      document.getElementById('galeria-modal').scrollTop = 0;
+
+      if (cat.fotos.length === 0) {
+        grid.innerHTML = '<p style="color:var(--grey);grid-column:1/-1;text-align:center;padding:60px 0;font-family:\'Barlow Condensed\',sans-serif;letter-spacing:0.2em;">FOTOS PR\u00d3XIMAMENTE</p>';
+      } else {
+        // lbFotos apunta a las ORIGINALES (para el lightbox)
+        lbFotos = cat.fotos.map(f => 'imagenes/' + carpeta + '/' + f);
+        // thumbFotos apunta a las MINIATURAS (para el grid)
+        const thumbFotos = cat.fotos.map(f => 'imagenes/thumbs/' + carpeta + '/' + f);
+
+        cat.fotos.forEach((foto, i) => {
+          const div = document.createElement('div');
+          div.className = 'gmodal-thumb';
+          div.onclick = () => abrirLightbox(i);
+
+          // Skeleton shimmer
+          const skel = document.createElement('div');
+          skel.className = 'thumb-skeleton';
+          div.appendChild(skel);
+
+          const img = document.createElement('img');
+          img.alt = cat.nombre + ' ' + (i + 1);
+          // Las primeras 9 cargan eager, el resto lazy
+          img.loading = i < 9 ? 'eager' : 'lazy';
+          img.decoding = 'async';
+
+          img.onload = () => div.classList.add('img-ready');
+          img.onerror = () => {
+            // Si no hay miniatura, usar original
+            img.src = lbFotos[i];
+            div.classList.add('img-ready');
+          };
+
+          // Cargar miniatura (mucho mas rapida)
+          img.src = thumbFotos[i];
+          div.appendChild(img);
+          grid.appendChild(div);
+
+          // Aparicion escalonada suave (max 500ms)
+          const delay = Math.min(i * 45, 500);
+          setTimeout(() => div.classList.add('loaded'), delay + 40);
+        });
+
+        // Pre-cargar las primeras 3 fotos originales en background
+        // para que el lightbox abra rapido
+        lbFotos.slice(0, 3).forEach(src => {
+          const p = new Image(); p.src = src;
+        });
+      }
+      document.getElementById('galeria-modal').classList.add('open');
+      document.getElementById('galeria-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModal() {
+      document.getElementById('galeria-modal').classList.remove('open');
+      document.getElementById('galeria-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Precarga imagen en background
+    function preloadImg(src) {
+      if (!src) return;
+      const p = new Image();
+      p.src = src;
+    }
+
+    function setLightboxImg(src, idx) {
+      const lbImg = document.getElementById('lb-img');
+      const spinner = document.getElementById('lb-spinner');
+
+      // Fade out
+      lbImg.classList.add('fading');
+      spinner.classList.add('active');
+
+      const newImg = new Image();
+      newImg.onload = () => {
+        lbImg.src = src;
+        lbImg.classList.remove('fading');
+        spinner.classList.remove('active');
+        // Pre-cargar anterior y siguiente
+        preloadImg(lbFotos[(idx + 1) % lbFotos.length]);
+        preloadImg(lbFotos[(idx - 1 + lbFotos.length) % lbFotos.length]);
+      };
+      newImg.onerror = () => {
+        lbImg.src = src;
+        lbImg.classList.remove('fading');
+        spinner.classList.remove('active');
+      };
+      newImg.src = src;
+    }
+
+    function abrirLightbox(idx) {
+      if (!lbFotos.length) return;
+      lbIdx = idx;
+      const lbImg = document.getElementById('lb-img');
+      const spinner = document.getElementById('lb-spinner');
+      lbImg.src = '';
+      lbImg.classList.add('fading');
+      spinner.classList.add('active');
+      document.getElementById('lb-cur').textContent = idx + 1;
+      document.getElementById('lb-tot').textContent = lbFotos.length;
+      document.getElementById('lightbox').classList.add('open');
+      document.getElementById('lb-overlay').classList.add('open');
+      setLightboxImg(lbFotos[idx], idx);
+    }
+
+    function navLightbox(dir) {
+      lbIdx = (lbIdx + dir + lbFotos.length) % lbFotos.length;
+      document.getElementById('lb-cur').textContent = lbIdx + 1;
+      setLightboxImg(lbFotos[lbIdx], lbIdx);
+    }
+
+    function cerrarLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.getElementById('lb-overlay').classList.remove('open');
+      document.getElementById('lb-spinner').classList.remove('active');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { cerrarLightbox(); cerrarModal(); }
+      if (e.key === 'ArrowRight') navLightbox(1);
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+    });
+
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .gallery-item, .pricing-card, .service-item, .galeria-card, .gmodal-thumb').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Portfolio tabs
+    function showTab(name, btn) {
+      document.querySelectorAll('.gallery-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // ── WhatsApp Form ─────────────────────────────
+    const WHATSAPP_NUMBER = "593968806979";
+
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById('f-nombre').value.trim();
+      const contacto = document.getElementById('f-contacto').value.trim();
+      const paquete = document.getElementById('f-paquete').value;
+      const idea = document.getElementById('f-idea').value.trim();
+      const errNombre = document.getElementById('err-nombre');
+
+      if (!nombre) {
+        errNombre.style.display = 'block';
+        document.getElementById('f-nombre').focus();
+        return;
+      }
+      errNombre.style.display = 'none';
+
+      const paqueteTexto = paquete || 'No especificado';
+      const ideaTexto = idea || 'No especificada';
+      const contactoTexto = contacto || 'No proporcionado';
+
+      const mensaje =
+        `¡Hola Alex! 👋 Vi tu portafolio y me interesa agendar una sesión.
+
+*Nombre:* ${nombre}
+*Contacto:* ${contactoTexto}
+*Paquete:* ${paqueteTexto}
+*Mi idea:* ${ideaTexto}
+
+¿Cuándo tendríamos disponibilidad? 📸`;
+
+      const btn = e.target.querySelector('.btn-submit');
+      const text = btn.querySelector('.btn-text');
+      text.textContent = 'Abriendo WhatsApp…';
+      btn.style.background = '#25D366';
+      btn.style.borderColor = '#25D366';
+
+      setTimeout(() => {
+        const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, '_blank');
+
+        setTimeout(() => {
+          text.textContent = 'Enviar por WhatsApp';
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          e.target.reset();
+        }, 2500);
+      }, 600);
+    }
+  </script>
+</body>
+
+</html>
