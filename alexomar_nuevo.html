@@ -2585,8 +2585,7 @@
         const imgEl = document.getElementById('portada-' + cat.id);
         if (imgEl && portadaFile) {
           // Usar la miniatura para la portada (carga rapida)
-          const carpeta = CARPETA_MAP[cat.id] || cat.id;
-          imgEl.style.backgroundImage = "url('imagenes/thumbs/" + carpeta + "/" + portadaFile + "')";
+          imgEl.style.backgroundImage = "url('imagenes/" + carpeta + "/" + portadaFile + "')";
         }
         const countEl = document.getElementById('count-' + cat.id);
         if (countEl) {
@@ -2617,8 +2616,8 @@
       } else {
         // lbFotos apunta a las ORIGINALES (para el lightbox)
         lbFotos = cat.fotos.map(f => 'imagenes/' + carpeta + '/' + f);
-        // thumbFotos apunta a las MINIATURAS (para el grid)
-        const thumbFotos = cat.fotos.map(f => 'imagenes/thumbs/' + carpeta + '/' + f);
+        // Usar las originales directamente (color perfecto)
+        const thumbFotos = cat.fotos.map(f => 'imagenes/' + carpeta + '/' + f);
 
         cat.fotos.forEach((foto, i) => {
           const div = document.createElement('div');
