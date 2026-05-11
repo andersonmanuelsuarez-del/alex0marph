@@ -847,7 +847,7 @@
 
     .galeria-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 4px;
     }
 
@@ -2253,6 +2253,15 @@
           <span class="galeria-card-arrow">→</span>
         </div>
       </div>
+      <div class="galeria-card reveal reveal-delay-3" onclick="abrirCategoria(5)">
+        <div class="galeria-card-img" id="portada-link6"></div>
+        <div class="galeria-card-info">
+          <span class="galeria-card-num">06</span>
+          <h3 class="galeria-card-name">Maternidad</h3>
+          <span class="galeria-card-count" id="count-link6">cargando...</span>
+          <span class="galeria-card-arrow">→</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -2544,7 +2553,7 @@
     // ============================================================
     // GALERÍA DE EVENTOS — CONFIGURACIÓN
     // ============================================================
-    const CARPETA_MAP = { 'link1': 'link 1', 'link2': 'link 2', 'link3': 'link 3', 'link4': 'link 4', 'link5': 'link 5' };
+    const CARPETA_MAP = { 'link1': 'link 1', 'link2': 'link 2', 'link3': 'link 3', 'link4': 'link 4', 'link5': 'link 5', 'link6': 'link 6' };
     const GALERIA_DATA = [
       {
         id: 'link1',
@@ -2575,6 +2584,12 @@
         nombre: 'Fotos Infantiles',
         portada: null,
         fotos: ['DDDD.jpg', 'EITAN 2 copia.jpg', 'ESTUDIO-FOTOGRAFICO-2428-Editar.jpg', 'ESTUDIO-FOTOGRAFICO-5013-Editar.jpg', 'ESTUDIO-FOTOGRAFICO-5014-Editar copia.jpg', 'ESTUDIO-FOTOGRAFICO-5020-Editar.jpg', 'd2.jpg', 'firefly-output-1778134807788 copia.jpg']
+      },
+      {
+        id: 'link6',
+        nombre: 'Maternidad',
+        portada: null,
+        fotos: ['2X copia.jpg', '3XX copia.jpg', '8 copia.jpg', 'DSC02410 copia 2.jpg', 'DSC02489 copia 3.jpg', 'DSC02512 copia 2.jpg', 'DSC08149 copia 2.jpg', 'DSC08177 copia 2.jpg', 'DSC09550 copia 2.jpg', 'DSC09564 copia 2.jpg', 'DSC09627 copia 2.jpg', 'DSC09691 copia 2.jpg', 'DSC09791 copia 2.jpg', 'firefly-output-1777872594363 copia 2.jpg']
       }
     ];
 
@@ -2584,7 +2599,7 @@
         const portadaFile = cat.portada || (cat.fotos.length > 0 ? cat.fotos[0] : null);
         const imgEl = document.getElementById('portada-' + cat.id);
         if (imgEl && portadaFile) {
-          // Usar la miniatura para la portada (carga rapida)
+          const carpeta = CARPETA_MAP[cat.id] || cat.id;
           imgEl.style.backgroundImage = "url('imagenes/" + carpeta + "/" + portadaFile + "')";
         }
         const countEl = document.getElementById('count-' + cat.id);
